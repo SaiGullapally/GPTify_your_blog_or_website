@@ -40,7 +40,7 @@ You need to create your own OPENAI_API_KEY in a .env file wihtin the same repo t
 Note that you can you use other services like Google cloud platform key or AWS as well with minimal chnages
 
 ## Customization
-In the given script I use this for on my ![blog](https://mlrad.io/) but the code is written in such a way as to make it easy to try it for your won websites/blogs and with different scrapers, llms, DBs etc!
+In the given script I use this for on my [blog](https://mlrad.io/) but the code is written in such a way as to make it easy to try it for your won websites/blogs and with different scrapers, llms, DBs etc!
 
 ## Usage
 To run the chatbot script as provided, execute the following command:
