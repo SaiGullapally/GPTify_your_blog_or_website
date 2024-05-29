@@ -9,21 +9,20 @@ class AbstractWebsiteTextScraper(ABC):
     """Abstract strategy Base Class to define the signatures/contracts of the critical methods
     for the concrete strategy implementations
     """
-    def __init__(self, output_store_dir: str) -> None:
+    def __init__(self, output_store_dir: str, root_domain: str) -> None:
         """initializes the parameters of the scraper
         Args:
             output_store_dir (str): the local dir to store the scraped text documents at
         """
         self.output_store_dir =  output_store_dir
+        self.root_domain = root_domain
         if not os.path.exists(self.output_store_dir):
             os.makedirs(self.output_store_dir)
+    
 
     @abstractmethod
-    def scrape_website(self, website_domain: str) -> int:
-        """Takes the website url str as an input and
-
-        Args:
-            website_domain (str): the url of the website whose pages we need to scrape the text from
+    def start_scraping(self) -> int:
+        """Starts scraping the root domain and its subpages
 
         Returns:
             int: 0 or 1 depending on whether the sraping was successful or ran into error
@@ -43,10 +42,9 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
             root_domain (str): the root domain for scraping, only links beginnign 
             with the root domain will be scraped
         """
-        super().__init__(output_store_dir)
+        super().__init__(output_store_dir, root_domain)
         # keep track of pages that have been parsed
         self.parsed_pages = []
-        self.root_domain = root_domain
         # keep track of when a page was scraped
         self.date_time = None
 
@@ -108,10 +106,15 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
                 if sub_page not in self.parsed_pages:
                     self.scrape(sub_page)
 
-    def scrape_website(self, website_domain: str) -> int:
+    def start_scraping(self) -> int:
+        """scrapes the root domain and subpages
+
+        Returns:
+            int: error status 0 if successful else 1
+        """
         try:
-            self.scrape(website_domain=website_domain)
-            print(f"Completed scraping:{website_domain}. The saved text documents can be found at:{self.output_store_dir}")
+            self.scrape(website_domain=self.root_domain)
+            print(f"Completed scraping:{self.root_domain}. The saved text documents can be found at:{self.output_store_dir}")
             return 0
         except Exception as e:
             print('An exception occurred: {}'.format(e))
