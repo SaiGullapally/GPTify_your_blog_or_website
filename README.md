@@ -4,6 +4,8 @@ This repository contains reference code for integrating a Retrieval-Augmented Ge
 The provided scripts and resources demonstrate how to set up and run the chatbot, allowing you to add sophisticated conversational 
 capabilities to your web application.
 
+NOTE: This involves scraping text data for the given website so make sure you have the required permissions to do this
+
 ## Table of Contents
 - [Features](#features)
 - [Requirements](#requirements)
@@ -38,7 +40,7 @@ You need to create your own OPENAI_API_KEY in a .env file wihtin the same repo t
 Note that you can you use other services like Google cloud platform key or AWS as well with minimal chnages
 
 ## Customization
-The code is written in such a way as to make it easy to try it for various websites, blogs, with various llms, DBs etc!
+In the given script I use this for on my ![blog](https://mlrad.io/) but the code is written in such a way as to make it easy to try it for your won websites/blogs and with different scrapers, llms, DBs etc!
 
 ## Usage
 To run the chatbot script as provided, execute the following command:
