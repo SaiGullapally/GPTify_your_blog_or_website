@@ -1,27 +1,29 @@
+import os
+import re
 from abc import ABC, abstractmethod
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
-import re
-import os
+
 
 class AbstractWebsiteTextScraper(ABC):
     """Abstract strategy Base Class to define the signatures/contracts of the critical methods
     for the concrete strategy implementations
     """
+
     def __init__(self, output_store_dir: str, root_domain: str) -> None:
         """initializes the parameters of the scraper
         Args:
             output_store_dir (str): the local dir to store the scraped text documents at
         """
-        self.output_store_dir =  output_store_dir
+        self.output_store_dir = output_store_dir
         self.root_domain = root_domain
         if not os.path.exists(self.output_store_dir):
             os.makedirs(self.output_store_dir)
-    
 
     @abstractmethod
-    def start_scraping(self) -> int:
+    def scrape_root_domain(self) -> int:
         """Starts scraping the root domain and its subpages
 
         Returns:
@@ -34,12 +36,13 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
     """scrapes the website and all the subpages of the website using
     requests and beautiful soup packages
     """
+
     def __init__(self, output_store_dir: str, root_domain: str):
         """nitializes the parameters of the scraper
 
         Args:
             output_store_dir (str): output directory to store the scrpaed data
-            root_domain (str): the root domain for scraping, only links beginnign 
+            root_domain (str): the root domain for scraping, only links beginnign
             with the root domain will be scraped
         """
         super().__init__(output_store_dir, root_domain)
@@ -58,7 +61,7 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
         Returns:
             str: page text after post processing
         """
-        
+
         text_to_be_added = f"\
             Website URL: {website_domain} \n\n \
             Date on which the data was downloaded from the website: {datetime.now().date()} \n\n \
@@ -74,13 +77,12 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
             website_domain (str): url of the website page from which the page text was scraped
             page_text (str): page text to be saved
         """
-        document_name = re.sub('[/,:,.]', '__', website_domain)+'.txt'
+        document_name = re.sub("[/,:,.]", "__", website_domain) + ".txt"
         file_path = os.path.join(self.output_store_dir, document_name)
         with open(file_path, "w") as f:
             f.write(page_text)
-        
 
-    def scrape(self, website_domain:str) -> None:
+    def scrape(self, website_domain: str) -> None:
         """scrapes the given website and all the subpages
 
         Args:
@@ -100,13 +102,17 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
             print(f"completed scraping web page: {website_domain}")
             # Extract sub pages
 
-            sub_pages=[i.attrs['href'] for i in soup.find_all('a') if i.attrs['href'].startswith(self.root_domain)]
+            sub_pages = [
+                i.attrs["href"]
+                for i in soup.find_all("a")
+                if i.attrs["href"].startswith(self.root_domain)
+            ]
             for sub_page in sub_pages:
                 # filter out already parsed
                 if sub_page not in self.parsed_pages:
                     self.scrape(sub_page)
 
-    def start_scraping(self) -> int:
+    def scrape_root_domain(self) -> int:
         """scrapes the root domain and subpages
 
         Returns:
@@ -114,10 +120,10 @@ class SimpleWebsiteTextScraper(AbstractWebsiteTextScraper):
         """
         try:
             self.scrape(website_domain=self.root_domain)
-            print(f"Completed scraping:{self.root_domain}. The saved text documents can be found at:{self.output_store_dir}")
+            print(
+                f"Completed scraping:{self.root_domain}. The saved text documents can be found at:{self.output_store_dir}"
+            )
             return 0
         except Exception as e:
-            print('An exception occurred: {}'.format(e))
+            print("An exception occurred: {}".format(e))
             return 1
-
-

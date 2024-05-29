@@ -1,4 +1,5 @@
-from components.scraper_strategies import SimpleWebsiteTextScraper
+from components.data_loaders import TxtDataLoader
 from components.embedding_factories import OpenAIEmbeddingsFactory
 from components.llm_factories import OpenAIGPT3p5Factory
+from components.scraper_strategies import SimpleWebsiteTextScraper
 from components.vector_db_wrappers import WrappedChromaVectorDB
