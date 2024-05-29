@@ -1,4 +1,4 @@
-# RAG Chatbot Integration
+# RAG Chatbot Integration for Blogs or Websites
 
 This repository contains reference code for integrating a Retrieval-Augmented Generation (RAG) chatbot feature into any website. 
 The provided scripts and resources demonstrate how to set up and run the chatbot, allowing you to add sophisticated conversational 
