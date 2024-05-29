@@ -6,8 +6,8 @@ import re
 import os
 
 class AbstractWebsiteTextScraper(ABC):
-    """Abstract Base Class to define the signatures/contracts of the critical methods
-    for the concrete implementations
+    """Abstract strategy Base Class to define the signatures/contracts of the critical methods
+    for the concrete strategy implementations
     """
     def __init__(self, output_store_dir: str) -> None:
         """initializes the parameters of the scraper
